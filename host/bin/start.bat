@@ -4,7 +4,7 @@
 setlocal
 
 rem // Get latest release file from github
-%CD%\curl\bin\curl -outf https://api.github.com/repos/Draakie2017/photonic3d-dev/releases/latest
+%CD%\curl\bin\curl -outf https://api.github.com/repos/WesGilster/Photonic3D/releases/latest
 
 rem // Set location of downloaded release file (json)
 set "latestRelease=utf"
