@@ -121,4 +121,15 @@ public class SettingsService {
 	public void setHostInformation(HostInformation info) {
 		HostProperties.Instance().saveHostInformation(info);
 	}
+    
+    @ApiOperation(value="Return the current setting for the webGUI")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = SwaggerMetadata.SUCCESS),
+            @ApiResponse(code = 500, message = SwaggerMetadata.UNEXPECTED_ERROR)})
+	@GET
+	@Path("getWebGUI")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getWebGUI() {
+		return "\"" + new String(JsonStringEncoder.getInstance().quoteAsString(HostProperties.Instance().getHostGUIDir())) + "\"";
+	}
 }
