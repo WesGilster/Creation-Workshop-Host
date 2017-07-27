@@ -13,6 +13,7 @@ import javax.ws.rs.core.Response;
 
 import com.fasterxml.jackson.core.io.JsonStringEncoder;
 
+import org.apache.commons.configuration.ConfigurationException;
 import org.area515.resinprinter.server.CwhEmailSettings;
 import org.area515.resinprinter.server.HostInformation;
 import org.area515.resinprinter.server.HostProperties;
@@ -165,4 +166,17 @@ public class SettingsService {
 	public List<String> getTouchscreenAvailableList() {
 		return HostProperties.Instance().getavailbleTouchscreens();
 	}
+
+    
+    @ApiOperation(value="Set the theme for the webGUI")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = SwaggerMetadata.SUCCESS),
+            @ApiResponse(code = 500, message = SwaggerMetadata.UNEXPECTED_ERROR)})
+    @PUT
+	@Path("setWebGUI")
+	public void setWebGUI(String newTheme) throws ConfigurationException {
+		HostProperties.Instance().setWebGUI(newTheme);
+	}
+    
+    
 }

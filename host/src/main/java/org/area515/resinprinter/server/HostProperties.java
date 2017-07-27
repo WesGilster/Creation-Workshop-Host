@@ -33,8 +33,11 @@ import javax.xml.namespace.QName;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.configuration.PropertiesConfiguration;
+import org.apache.commons.configuration.ConfigurationException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
 import org.area515.resinprinter.display.AlreadyAssignedException;
 import org.area515.resinprinter.display.GraphicsOutputInterface;
 import org.area515.resinprinter.display.InappropriateDeviceException;
@@ -987,6 +990,12 @@ public class HostProperties {
 
 		configurations.put(configuration.getName(), configuration);
 		saveConfigurations(configuration);
+	}
+	
+	public void setWebGUI(String newTheme) throws ConfigurationException {
+		PropertiesConfiguration config = new PropertiesConfiguration("config.properties");
+		config.setProperty("hostGUI", newTheme);
+		config.save();
 	}
 
 	public void removePrinterConfiguration(PrinterConfiguration configuration) throws InappropriateDeviceException {
