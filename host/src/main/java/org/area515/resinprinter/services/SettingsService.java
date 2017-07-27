@@ -133,6 +133,17 @@ public class SettingsService {
 		return "\"" + new String(JsonStringEncoder.getInstance().quoteAsString(HostProperties.Instance().getHostGUIDir())) + "\"";
 	}
     
+    @ApiOperation(value="Return the current setting for the touchScreenGUI")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = SwaggerMetadata.SUCCESS),
+            @ApiResponse(code = 500, message = SwaggerMetadata.UNEXPECTED_ERROR)})
+	@GET
+	@Path("getTouchScreenGUI")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getTouchScreenGUI() {
+		return "\"" + new String(JsonStringEncoder.getInstance().quoteAsString(HostProperties.Instance().getTouchScreenGUIDir())) + "\"";
+	}
+    
     @ApiOperation(value="Get list of available installed skins for webGUI")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = SwaggerMetadata.SUCCESS),

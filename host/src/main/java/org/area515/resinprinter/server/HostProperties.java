@@ -79,6 +79,7 @@ public class HostProperties {
 	private File uploadDir;
 	private File printDir;
 	private String hostGUI;
+	private String touchScreenGUI;
 	private List<String> availableSkins;
 	private List<String> availableTouchscreen;
 	private String tempString;
@@ -197,6 +198,7 @@ public class HostProperties {
 		
 		fakeSerial = new Boolean(configurationProperties.getProperty("fakeserial", "false"));
 		hostGUI = configurationProperties.getProperty("hostGUI", "resources");
+		touchScreenGUI = configurationProperties.getProperty("touchScreenGUI", "resources");
 		visibleCards = Arrays.asList(configurationProperties.getProperty("visibleCards", "printers,printJobs,printables,users,settings").split(","));
 		
 		//This loads features
@@ -495,6 +497,10 @@ public class HostProperties {
 	
 	public String getHostGUIDir() {
 		return hostGUI;
+	}
+	
+	public String getTouchScreenGUIDir() {
+		return touchScreenGUI;
 	}
 	
 	public File getUploadDir(){
