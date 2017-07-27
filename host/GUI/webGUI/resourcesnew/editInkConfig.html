@@ -1,0 +1,85 @@
+		<div class="panel panel-default">
+			<div class="panel-heading clearfix">
+				<i class="fa pull-left fa-2x fa-eyedropper"></i>
+				<h4 class="pull-left">Ink Configuration: {{printersController.currentPrinter.configuration.slicingProfile.SelectedInk}} </h4>
+				<div class="btn-group pull-right" >
+					<button class="btn btn-primary" ng-disabled="printersController.currentPrinter.started" ng-click="savePrinter(printersController.currentPrinter)" >
+						<i class="fa fa-pencil"></i>
+						<span>Save</span>
+					</button>
+				</div>
+			</div>
+			<div class="list-group">
+				<div class="list-group-item">
+					<i class="fa fa-2x fa-eye pull-left"></i>
+					<div>
+						<h4 class="pull-left">Print Material Detector</h4>
+						<button class="btn btn-primary pull-right" ng-disabled="!printersController.currentPrinter.started" ng-click="printersController.testRemainingPrintMaterial(printersController.currentPrinter)" >
+						Test
+						</button>
+					</div>
+					<select name="type" class="form-control"
+						ng-model="printersController.currentPrinter.configuration.slicingProfile.InkConfig[printersController.currentPrinter.configuration.slicingProfile.selectedInkConfigIndex].PrintMaterialDetector" 
+						ng-options="inkDetector.className as inkDetector.name for inkDetector in printersController.inkDetectors">
+					  <option value="" selected>Select an Ink Detector...</option>
+					</select>
+				</div>
+				<div class="list-group-item">
+					<i class="fa fa-2x fa-adjust fa-rotate-90 pull-left"></i>
+					<h4>Pause on Print Material Remaining (%)</h4>
+					<input type="number" class="form-control" placeholder="%" ng-model="printersController.currentPrinter.configuration.slicingProfile.InkConfig[printersController.currentPrinter.configuration.slicingProfile.selectedInkConfigIndex].PercentageOfPrintMaterialConsideredEmpty">
+				</div>
+				<div class="list-group-item">
+					<i class="fa fa-2x fa-money pull-left"></i>
+					<h4>Resin Price Per Liter ($)</h4>
+					<input type="number" class="form-control" placeholder="$" step="0.01" ng-model="printersController.currentPrinter.configuration.slicingProfile.InkConfig[printersController.currentPrinter.configuration.slicingProfile.selectedInkConfigIndex].ResinPriceL">
+				</div>
+				<div class="list-group-item">
+					<i title="template variable = ${LayerThickness}" class="fa fa-2x fa-reorder pull-left"></i>
+					<h4 title="template variable = ${LayerThickness}">Slice Height (mm)</h4>
+					<input title="template variable = ${LayerThickness}" type="number" step="0.01" class="form-control" placeholder="mm" ng-model="printersController.currentPrinter.configuration.slicingProfile.InkConfig[printersController.currentPrinter.configuration.slicingProfile.selectedInkConfigIndex].SliceHeight">
+				</div>
+				<div class="list-group-item">
+					<i title="template variable = ${LayerTime}" class="fa fa-2x fa-fire pull-left"></i>
+					<h4 title="template variable = ${LayerTime}">Exposure Time (ms)</h4>
+					<input title="template variable = ${LayerTime}" type="number" step="0.01" class="form-control" placeholder="mm" ng-model="printersController.currentPrinter.configuration.slicingProfile.InkConfig[printersController.currentPrinter.configuration.slicingProfile.selectedInkConfigIndex].LayerTime">
+				</div>
+				<div class="list-group-item">
+					<i title="template variable = ${$NumFirstLayers}" class="fa fa-2x fa-sort-numeric-asc pull-left"></i>
+					<h4 title="template variable = ${$NumFirstLayers}">Number Of First Layers</h4>
+					<input title="template variable = ${$NumFirstLayers}" type="number" class="form-control" placeholder="count" ng-model="printersController.currentPrinter.configuration.slicingProfile.InkConfig[printersController.currentPrinter.configuration.slicingProfile.selectedInkConfigIndex].NumberofBottomLayers">
+				</div>
+				<div class="list-group-item">
+					<span title="template variable = ${FirstLayerTime}" class="fa-stack fa-2x pull-left">
+						<i class="fa fa-stack-1x fa-fire"></i>
+						<i class="fa fa-stack-1x fa-reorder"></i>
+					</span>
+					<h4 title="template variable = ${FirstLayerTime}">Exposure Time For First Layers (ms)</h4>
+					<input title="template variable = ${FirstLayerTime}" type="number" class="form-control" placeholder="ms" ng-model="printersController.currentPrinter.configuration.slicingProfile.InkConfig[printersController.currentPrinter.configuration.slicingProfile.selectedInkConfigIndex].FirstLayerTime">
+				</div>
+				<div class="list-group-item">
+					<i title="template variable = ${LayerThickness}" class="fa fa-2x fa-arrows-h pull-left"></i>
+					<h4 title="template variable = ${LayerThickness}">X Density (pixels/mm)</h4>
+					<input title="template variable = ${LayerThickness}" type="number" step="0.01" class="form-control" placeholder="pixels/mm" ng-model="printersController.currentPrinter.configuration.slicingProfile.DotsPermmX">
+				</div>
+				<div class="list-group-item">
+					<i title="template variable = ${LayerThickness}" class="fa fa-2x fa-arrows-v pull-left"></i>
+					<h4 title="template variable = ${LayerThickness}">Y Density (pixels/mm)</h4>
+					<input title="template variable = ${LayerThickness}" type="number" step="0.01" class="form-control" placeholder="pixels/mm" ng-model="printersController.currentPrinter.configuration.slicingProfile.DotsPermmY">
+				</div>
+				<div class="list-group-item">
+					<i title="X Width in pixels" class="fa fa-2x fa-arrows-h pull-left"></i>
+					<h4 title="X Width in pixels">Build Platform X Width (pixels)</h4>
+					<input title="X Width in pixels" type="number" step="1" class="form-control" placeholder="pixels" ng-model="printersController.currentPrinter.configuration.slicingProfile.XResolution">
+				</div>
+				<div class="list-group-item">
+					<i title="Y Width in pixels" class="fa fa-2x fa-arrows-v pull-left"></i>
+					<h4 title="Y Width in pixels">Build Platform Y Width (pixels)</h4>
+					<input title="Y Width in pixels" type="number" step="1" class="form-control" placeholder="pixels" ng-model="printersController.currentPrinter.configuration.slicingProfile.YResolution">
+				</div>
+			</div>
+			
+			<div class="panel-footer">
+				<span ng-include="'cardFooter.html'"></span>
+			</div>
+		</div>

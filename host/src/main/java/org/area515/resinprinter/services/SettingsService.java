@@ -13,6 +13,7 @@ import javax.ws.rs.core.Response;
 
 import com.fasterxml.jackson.core.io.JsonStringEncoder;
 
+import org.apache.commons.configuration.ConfigurationException;
 import org.area515.resinprinter.server.CwhEmailSettings;
 import org.area515.resinprinter.server.HostInformation;
 import org.area515.resinprinter.server.HostProperties;
@@ -121,4 +122,69 @@ public class SettingsService {
 	public void setHostInformation(HostInformation info) {
 		HostProperties.Instance().saveHostInformation(info);
 	}
+    
+    @ApiOperation(value="Return the current setting for the webGUI")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = SwaggerMetadata.SUCCESS),
+            @ApiResponse(code = 500, message = SwaggerMetadata.UNEXPECTED_ERROR)})
+	@GET
+	@Path("getWebGUI")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getWebGUI() {
+		return "\"" + new String(JsonStringEncoder.getInstance().quoteAsString(HostProperties.Instance().getHostGUIDir())) + "\"";
+	}
+    
+    @ApiOperation(value="Return the current setting for the touchScreenGUI")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = SwaggerMetadata.SUCCESS),
+            @ApiResponse(code = 500, message = SwaggerMetadata.UNEXPECTED_ERROR)})
+	@GET
+	@Path("getTouchScreenGUI")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getTouchScreenGUI() {
+		return "\"" + new String(JsonStringEncoder.getInstance().quoteAsString(HostProperties.Instance().getTouchScreenGUIDir())) + "\"";
+	}
+    
+    @ApiOperation(value="Get list of available installed skins for webGUI")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = SwaggerMetadata.SUCCESS),
+            @ApiResponse(code = 500, message = SwaggerMetadata.UNEXPECTED_ERROR)})
+	@GET
+	@Path("getWebGUIAvailableList")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<String> getWebGUIAvailableList() {
+		return HostProperties.Instance().getavailbleGUI();
+	}
+    
+    @ApiOperation(value="Get list of available installed skins for touchscreen")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = SwaggerMetadata.SUCCESS),
+            @ApiResponse(code = 500, message = SwaggerMetadata.UNEXPECTED_ERROR)})
+	@GET
+	@Path("getTouchscreenAvailableList")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<String> getTouchscreenAvailableList() {
+		return HostProperties.Instance().getavailbleTouchscreens();
+	}
+    
+    @ApiOperation(value="Set the theme for the webGUI")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = SwaggerMetadata.SUCCESS),
+            @ApiResponse(code = 500, message = SwaggerMetadata.UNEXPECTED_ERROR)})
+    @PUT
+	@Path("setWebGUI")
+	public void setWebGUI(String newTheme) throws ConfigurationException {
+		HostProperties.Instance().setWebGUI(newTheme);
+	}
+    
+    @ApiOperation(value="Set the theme for the touchScreenGUI")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = SwaggerMetadata.SUCCESS),
+            @ApiResponse(code = 500, message = SwaggerMetadata.UNEXPECTED_ERROR)})
+    @PUT
+	@Path("setTouchscreenGUI")
+	public void setTouchScreenGUI(String newTheme) throws ConfigurationException {
+		HostProperties.Instance().setTouchScreenGUI(newTheme);
+	}
+    
 }

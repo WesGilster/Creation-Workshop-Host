@@ -33,8 +33,11 @@ import javax.xml.namespace.QName;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.configuration.PropertiesConfiguration;
+import org.apache.commons.configuration.ConfigurationException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
 import org.area515.resinprinter.display.AlreadyAssignedException;
 import org.area515.resinprinter.display.GraphicsOutputInterface;
 import org.area515.resinprinter.display.InappropriateDeviceException;
@@ -79,6 +82,10 @@ public class HostProperties {
 	private File uploadDir;
 	private File printDir;
 	private String hostGUI;
+	private String touchScreenGUI;
+	private List<String> availableSkins;
+	private List<String> availableTouchscreen;
+	private String tempString;
 	private boolean fakeSerial = false;
 	private boolean removeJobOnCompletion = true;
 	private boolean forceCalibrationOnFirstUse = false;
@@ -194,6 +201,7 @@ public class HostProperties {
 		
 		fakeSerial = new Boolean(configurationProperties.getProperty("fakeserial", "false"));
 		hostGUI = configurationProperties.getProperty("hostGUI", "resources");
+		touchScreenGUI = configurationProperties.getProperty("touchScreenGUI", "resources");
 		visibleCards = Arrays.asList(configurationProperties.getProperty("visibleCards", "printers,printJobs,printables,users,settings").split(","));
 		
 		//This loads features
@@ -470,8 +478,32 @@ public class HostProperties {
 		return printerHostPort;
 	}
 
+	public List<String> getavailbleTouchscreens() {
+		File dir = new File("GUI/touchScreen/");
+		String[] directories = dir.list();
+	    for (int i = 0; i < directories.length; i++) {
+	        logger.info("directories here " + directories[i]);
+	    }
+	    availableSkins = Arrays.asList(directories);
+		return availableSkins; 
+	}
+	
+	public List<String> getavailbleGUI() {
+		File dir = new File("GUI/webGUI/");
+		String[] directories = dir.list();
+	    for (int i = 0; i < directories.length; i++) {
+	        logger.info("directories here " + directories[i]);
+	    }
+	    availableTouchscreen = Arrays.asList(directories);
+		return availableTouchscreen; 
+	}
+	
 	public String getHostGUIDir() {
 		return hostGUI;
+	}
+	
+	public String getTouchScreenGUIDir() {
+		return touchScreenGUI;
 	}
 	
 	public File getUploadDir(){
@@ -958,6 +990,18 @@ public class HostProperties {
 
 		configurations.put(configuration.getName(), configuration);
 		saveConfigurations(configuration);
+	}
+	
+	public void setWebGUI(String newTheme) throws ConfigurationException {
+		PropertiesConfiguration config = new PropertiesConfiguration("config.properties");
+		config.setProperty("hostGUI", newTheme);
+		config.save();
+	}
+	
+	public void setTouchScreenGUI(String newTheme) throws ConfigurationException {
+		PropertiesConfiguration config = new PropertiesConfiguration("config.properties");
+		config.setProperty("touchScreenGUI", newTheme);
+		config.save();
 	}
 
 	public void removePrinterConfiguration(PrinterConfiguration configuration) throws InappropriateDeviceException {

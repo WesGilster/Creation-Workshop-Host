@@ -1,0 +1,35 @@
+<div class="panel panel-default bootcards-media" ng-show="printJobsController.currentPrintJob.printInProgress">
+	<div class="panel-heading clearfix">
+			<i class="fa fa-2x fa-video-camera pull-left"></i>
+			<h3 class="panel-title pull-left">Build Video: {{printJobsController.currentPrintJob.jobName}}</h3>
+			<div class="col-md-6 pull-right">
+				<input class="col-md-2 col-lg-2 cwh-input-smallbox form-control" type="text" placeholder="width" ng-model="printJobsController.currentBuildVideo.width">
+				<input class="col-md-2 col-lg-2 cwh-input-smallbox form-control" type="text" placeholder="height" ng-model="printJobsController.currentBuildVideo.height">
+				<span class="btn-group">
+					<a class="btn btn-primary" ng-show="printJobsController.currentPrintJob.printInProgress" ng-click="printJobsController.videoRecord('start', printJobsController.currentBuildVideo.width, printJobsController.currentBuildVideo.height)">
+						<i class="fa fa-circle"></i> 
+						<span>Record</span>
+					</a>
+					<a class="btn btn-danger" ng-show="printJobsController.currentPrintJob.printInProgress" ng-click="printJobsController.videoRecord('stop')">
+						<i class="fa fa-stop"></i> 
+						<span>Stop</span>
+					</a>
+					<a class="btn btn-success" ng-show="printJobsController.currentPrintJob.printInProgress" ng-click="printJobsController.startLiveStream()">
+						<span class="fa fa-video-camera"></span> 
+						<span class="fa fa-wifi fa-rotate-90"></span> 
+						<span>Live</span>
+					</a>
+				</span>
+			</div>
+	</div>
+	<div class="panel-body"><!--  width="275" height="206" -->
+		<video class="vcenter" class="img-responsive" controls ng-show="printJobsController.currentBuildLiveStream.url == null">
+			<source src="video/camera.mp4" ng-src="{{printJobsController.currentBuildVideo.url}}" class="img-responsive" type="video/mp4">
+			Your browser does not support the video tag.
+		</video>
+		<img ng-src="{{printJobsController.currentBuildLiveStream.url}}" ng-show="printJobsController.currentBuildLiveStream.url != null">
+	</div>
+	<div class="panel-footer">
+		<span ng-include="'cardFooter.html'"></span>
+	</div>
+</div>
