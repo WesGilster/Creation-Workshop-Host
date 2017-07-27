@@ -80,6 +80,7 @@ public class HostProperties {
 	private File printDir;
 	private String hostGUI;
 	private List<String> availableSkins;
+	private List<String> availableTouchscreen;
 	private String tempString;
 	private boolean fakeSerial = false;
 	private boolean removeJobOnCompletion = true;
@@ -472,14 +473,24 @@ public class HostProperties {
 		return printerHostPort;
 	}
 
-	public List<String> getavailbleGUI() {
-		File dir = new File("GUI/webGUI/");
+	public List<String> getavailbleTouchscreens() {
+		File dir = new File("GUI/touchScreen/");
 		String[] directories = dir.list();
 	    for (int i = 0; i < directories.length; i++) {
 	        logger.info("directories here " + directories[i]);
 	    }
 	    availableSkins = Arrays.asList(directories);
 		return availableSkins; 
+	}
+	
+	public List<String> getavailbleGUI() {
+		File dir = new File("GUI/webGUI/");
+		String[] directories = dir.list();
+	    for (int i = 0; i < directories.length; i++) {
+	        logger.info("directories here " + directories[i]);
+	    }
+	    availableTouchscreen = Arrays.asList(directories);
+		return availableTouchscreen; 
 	}
 	
 	public String getHostGUIDir() {

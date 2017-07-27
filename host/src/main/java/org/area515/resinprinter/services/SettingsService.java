@@ -143,4 +143,15 @@ public class SettingsService {
 	public List<String> getWebGUIAvailableList() {
 		return HostProperties.Instance().getavailbleGUI();
 	}
+    
+    @ApiOperation(value="Get list of available installed skins for touchscreen")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = SwaggerMetadata.SUCCESS),
+            @ApiResponse(code = 500, message = SwaggerMetadata.UNEXPECTED_ERROR)})
+	@GET
+	@Path("getTouchscreenAvailableList")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<String> getTouchscreenAvailableList() {
+		return HostProperties.Instance().getavailbleTouchscreens();
+	}
 }
