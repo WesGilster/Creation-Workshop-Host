@@ -997,6 +997,12 @@ public class HostProperties {
 		config.setProperty("hostGUI", newTheme);
 		config.save();
 	}
+	
+	public void setTouchScreenGUI(String newTheme) throws ConfigurationException {
+		PropertiesConfiguration config = new PropertiesConfiguration("config.properties");
+		config.setProperty("touchScreenGUI", newTheme);
+		config.save();
+	}
 
 	public void removePrinterConfiguration(PrinterConfiguration configuration) throws InappropriateDeviceException {
 		getPrinterConfigurations();

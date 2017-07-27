@@ -166,7 +166,6 @@ public class SettingsService {
 	public List<String> getTouchscreenAvailableList() {
 		return HostProperties.Instance().getavailbleTouchscreens();
 	}
-
     
     @ApiOperation(value="Set the theme for the webGUI")
     @ApiResponses(value = {
@@ -178,5 +177,14 @@ public class SettingsService {
 		HostProperties.Instance().setWebGUI(newTheme);
 	}
     
+    @ApiOperation(value="Set the theme for the touchScreenGUI")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = SwaggerMetadata.SUCCESS),
+            @ApiResponse(code = 500, message = SwaggerMetadata.UNEXPECTED_ERROR)})
+    @PUT
+	@Path("setTouchscreenGUI")
+	public void setTouchScreenGUI(String newTheme) throws ConfigurationException {
+		HostProperties.Instance().setTouchScreenGUI(newTheme);
+	}
     
 }
