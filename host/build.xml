@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 
 <project name="cwh" basedir="." default="build">
-  <import file="BuildCWH.xml"/>
+  <import file="BuildPhotonic3D.xml"/>
 
   <property name="build" location="srcbin"/>
   <!-- <property name="testbuild" location="testbin"/> -->
@@ -67,6 +67,5 @@
 
   <target name="setup" depends="init">
     <mkdir dir="${build}"/>
-    <!-- <mkdir dir="${testbuild}"/> -->
   </target>
 </project>

@@ -191,7 +191,7 @@ task preDist(dependsOn: ['installDist', 'repoVersion']) {
 
 }
 
-task dist(dependsOn: ['preDist', 'BuildCWH']) {
+task dist(dependsOn: ['preDist', 'BuildPhotonic3D']) {
 
 };
 
@@ -303,7 +303,7 @@ prepareGhPages.doFirst {
 // -------------------------
 githubRelease.dependsOn releaseDist
 dist.mustRunAfter setupRelease
-BuildCWH.mustRunAfter preDist
+BuildPhotonic3D.mustRunAfter preDist
 publishGhPages.dependsOn javadoc
 publishGhPages.dependsOn apidoc
 
