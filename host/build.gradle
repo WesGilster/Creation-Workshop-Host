@@ -163,16 +163,18 @@ githubPages {
 
 // TASK EXECUTION DEFS
 // -------------------
-task repoVersion() << {
-  commitVersion = grgit.describe()
+task repoVersion() {
+  doLast {
+    commitVersion = grgit.describe()
 
-  if (commitVersion == null) {
-    commitVersion = currentCommitHash();
+    if (commitVersion == null) {
+      commitVersion = currentCommitHash();
+    }
+
+    ant.properties['repo.version'] = commitVersion
+
+    println("Git Commit Description: "+commitVersion)
   }
-
-  ant.properties['repo.version'] = commitVersion
-
-  println("Git Commit Description: "+commitVersion)
 };
 
 task testJar(type: Jar) {
@@ -189,71 +191,79 @@ task dist(dependsOn: ['preDist', 'BuildPhotonic3D']) {
 
 };
 
-task setupRemote << {
-  def matchingRemotes = grgit.remote.list().findAll({it.name==releaseRepoRemoteName});
-  if (matchingRemotes.size < 1) {
-    throw new GradleException("No configured remotes match the the remote named: ${releaseRepoRemoteName}");
+task setupRemote {
+  doLast {
+    def matchingRemotes = grgit.remote.list().findAll({it.name==releaseRepoRemoteName});
+    if (matchingRemotes.size < 1) {
+      throw new GradleException("No configured remotes match the the remote named: ${releaseRepoRemoteName}");
+    }
+
+    def remote = matchingRemotes;
+    //def releaseUrl = "https://github.com/${github.owner}/${github.repo}"
+    def releaseUrl = remote.url;
+    println("Releasing to: "+releaseUrl);
+
+    def repoMatch = (releaseUrl =~ /github\.com[\/\:]([^\/]+)\/([^\/]*?)(\.git)?.?$/);
+
+    def repoOwner = repoMatch[0][1];
+    def repoName = repoMatch[0][2];
+
+    println("Repo Owner: ${repoOwner} / Repo Name: ${repoName}");
+
+    github.owner = repoOwner;
+    github.repo = repoName;
   }
-
-  def remote = matchingRemotes;
-  //def releaseUrl = "https://github.com/${github.owner}/${github.repo}"
-  def releaseUrl = remote.url;
-  println("Releasing to: "+releaseUrl);
-
-  def repoMatch = (releaseUrl =~ /github\.com[\/\:]([^\/]+)\/([^\/]*?)(\.git)?.?$/);
-
-  def repoOwner = repoMatch[0][1];
-  def repoName = repoMatch[0][2];
-
-  println("Repo Owner: ${repoOwner} / Repo Name: ${repoName}");
-
-  github.owner = repoOwner;
-  github.repo = repoName;
 }
 
 
-task setupRelease(dependsOn: ['setupRemote']) << {
-  grgit = Grgit.open(project.file('..'), new Credentials(username: github.owner, password: github.token));
+task setupRelease(dependsOn: ['setupRemote']) {
+  doLast {
+    grgit = Grgit.open(project.file('..'), new Credentials(username: github.owner, password: github.token));
 
-  if (releaseRepoToken.equals('GITHUB_API_TOKEN')) {
-    throw new GradleException("Please setup your gradle.properties for GitHub Releases")
+    if (releaseRepoToken.equals('GITHUB_API_TOKEN')) {
+      throw new GradleException("Please setup your gradle.properties for GitHub Releases")
+    }
+    def status = grgit.status();
+    println("----------------------------------------------")
+    println("Description of current commit: "+grgit.describe())
+    println("UNCOMMITTED STAGED CHANGES: "+status.staged)
+    println("UNCOMMITTED UNSTAGED CHANGES: "+status.unstaged)
+    println("----------------------------------------------")
+
+    def tagName = "$System.env.tagName";
+
+    println("Dry-Run Git Push to ${releaseRepoRemoteName}:")
+    grgit.push(dryRun: true, remote: releaseRepoRemoteName);
+    println("----------------------------------------------")
+    println("Check the above git push dry run to ensure that your push will succeed!");
+    ant.input(message: "Press <return> to continue...")
+
+    if (tagName == "${null}") {
+      println("Recommended development release tag: ${github.owner}-${currentCommitHash()}")
+      ant.input(message: "Enter the tag to create for this release > ", addproperty: "tagName")
+      tagName = ant.tagName
+    }
+
+    github.tagName = tagName;
+    grgit.tag.add(name: tagName);
+    println("Added tag: ${tagName}");
   }
-  def status = grgit.status();
-  println("----------------------------------------------")
-  println("Description of current commit: "+grgit.describe())
-  println("UNCOMMITTED STAGED CHANGES: "+status.staged)
-  println("UNCOMMITTED UNSTAGED CHANGES: "+status.unstaged)
-  println("----------------------------------------------")
-
-  def tagName = "$System.env.tagName";
-
-  println("Dry-Run Git Push to ${releaseRepoRemoteName}:")
-  grgit.push(dryRun: true, remote: releaseRepoRemoteName);
-  println("----------------------------------------------")
-  println("Check the above git push dry run to ensure that your push will succeed!");
-  ant.input(message: "Press <return> to continue...")
-
-  if (tagName == "${null}") {
-    println("Recommended development release tag: ${github.owner}-${currentCommitHash()}")
-    ant.input(message: "Enter the tag to create for this release > ", addproperty: "tagName")
-    tagName = ant.tagName
-  }
-
-  github.tagName = tagName;
-  grgit.tag.add(name: tagName);
-  println("Added tag: ${tagName}");
 }
 
-task releaseDist (dependsOn: ['dist']) << {
-  github.assets = fileTree(dir: '.', include: '*.zip', exclude: 'cwh-0.298.zip') as List;
-  if (github.assets.size() < 1) {
-    throw new GradleException("There are no zip files to release in the project directory.")
+task releaseDist (dependsOn: ['dist']) { 
+  doLast {
+    github.assets = fileTree(dir: '.', include: '*.zip', exclude: 'cwh-0.298.zip') as List;
+    if (github.assets.size() < 1) {
+      throw new GradleException("There are no zip files to release in the project directory.")
+    }
+    println("Releasing the following files: "+github.assets);
   }
-  println("Releasing the following files: "+github.assets);
 }
 
-task fullRelease(dependsOn: ['setupRelease', 'githubRelease']) << {
-  grgit.push(tags: true, remote: releaseRepoRemoteName);
+task fullRelease(dependsOn: ['setupRelease', 'githubRelease']) { 
+  doLast {
+    grgit.push(tags: true, remote: releaseRepoRemoteName);
+  }
 }
 
 task runSliceBrowser(type: JavaExec) {
