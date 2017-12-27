@@ -1,5 +1,11 @@
-// PROJECT CONFIG
-// --------------
+//=============================================================================
+// Photonic3D Gradle Build File
+//=============================================================================
+
+//=============================================================================
+// Project Configuration
+//=============================================================================
+
 plugins {
   id 'com.github.johnrengelman.shadow' version '2.0.2'
   id "java"
@@ -9,6 +15,22 @@ plugins {
   id 'org.ajoberstar.grgit' version '1.5.0'
   id 'org.ajoberstar.github-pages' version '1.5.0'
   id 'com.google.osdetector' version '1.4.0'
+}
+
+import org.ajoberstar.grgit.*;
+import org.gradle.internal.os.OperatingSystem;
+
+grgit = Grgit.open(project.file('..'));
+
+mainClassName = "org.area515.resinprinter.server.Main"
+applicationDefaultJvmArgs = ["-Dlog4j.configurationFile=conf/eclipselog4j2.properties"]
+applicationName = 'photonic3d'
+
+
+// Project Properties
+ext {
+  commitVersion = grgit.describe()
+  osLibDir = osLibDir()
 }
 
 configurations {
@@ -87,14 +109,26 @@ dependencies {
   doclet 'javax.ws.rs:javax.ws.rs-api:2.0'
 }
 
-sourceSets {
-  // Source and test files are in src/main and src/test per standard configuration
-}
-
 compileJava {
   options.compilerArgs << '-XDignore.symbol.file'
   options.fork = true
   options.forkOptions.executable = 'javac'
+}
+
+shadowJar {
+  baseName = 'photonic3d'
+  classifier = null
+  version = project.commitVersion
+}
+
+shadowDistTar {
+  baseName = 'photonic3d'
+  version = project.commitVersion
+}
+
+shadowDistZip {
+  baseName = 'photonic3d'
+  version = project.commitVersion
 }
 
 github {
@@ -115,25 +149,8 @@ eclipse {
   }
 }
 
-// PROJECT SETUP SCRIPT
-// --------------------
-import org.ajoberstar.grgit.*;
-import org.gradle.internal.os.OperatingSystem;
-
-ant.importBuild 'build.xml';
-
-grgit = Grgit.open(project.file('..'));
-def commitVersion = "unknown";
-
-mainClassName = "org.area515.resinprinter.server.Main"
-applicationDefaultJvmArgs = ["-Dlog4j.configurationFile=conf/eclipselog4j2.properties"]
-applicationName = 'photonic3d'
-jar.archiveName = 'photonic3d.jar'
-
-// TASK CONFIG
-// -----------
 test {
-  systemProperty "java.library.path", osLibDir()
+  systemProperty "java.library.path", project.osLibDir
   includes = ['**/*FullTestSuite*']
 
   forkEvery = 5
@@ -151,7 +168,7 @@ javadoc {
 }
 
 run {
-  systemProperty "java.library.path", osLibDir()
+  systemProperty "java.library.path", project.osLibDir
 }
 
 githubPages {
@@ -163,35 +180,15 @@ githubPages {
   }
 }
 
-// TASK EXECUTION DEFS
-// -------------------
-task repoVersion() {
-  doLast {
-    commitVersion = grgit.describe()
-
-    if (commitVersion == null) {
-      commitVersion = currentCommitHash();
-    }
-
-    ant.properties['repo.version'] = commitVersion
-
-    println("Git Commit Description: "+commitVersion)
-  }
-};
+//=============================================================================
+// Custom Tags
+//=============================================================================
 
 task testJar(type: Jar) {
   baseName = "photonic3d"
   classifier = "tests"
   from sourceSets.test.output
 }
-
-task preDist(dependsOn: ['installDist', 'repoVersion']) {
-
-}
-
-task dist(dependsOn: ['preDist', 'BuildPhotonic3D']) {
-
-};
 
 task setupRemote {
   doLast {
@@ -225,31 +222,33 @@ task setupRelease(dependsOn: ['setupRemote']) {
     if (releaseRepoToken.equals('GITHUB_API_TOKEN')) {
       throw new GradleException("Please setup your gradle.properties for GitHub Releases")
     }
+
     def status = grgit.status();
+    
     println("----------------------------------------------")
     println("Description of current commit: "+grgit.describe())
     println("UNCOMMITTED STAGED CHANGES: "+status.staged)
     println("UNCOMMITTED UNSTAGED CHANGES: "+status.unstaged)
     println("----------------------------------------------")
-
-    def tagName = "$System.env.tagName";
-
     println("Dry-Run Git Push to ${releaseRepoRemoteName}:")
     grgit.push(dryRun: true, remote: releaseRepoRemoteName);
     println("----------------------------------------------")
     println("Check the above git push dry run to ensure that your push will succeed!");
-    ant.input(message: "Press <return> to continue...")
+    input("Press <Enter> to continue...")
 
+    def tagName = "$System.env.tagName";
     if (tagName == "${null}") {
-      println("Recommended development release tag: ${github.owner}-${currentCommitHash()}")
-      ant.input(message: "Enter the tag to create for this release > ", addproperty: "tagName")
-      tagName = ant.tagName
+      println("Recommended development release tag: ${github.owner}-${project.commitVersion}")
+      tagName = input("Enter the tag to create for this release > ")
     }
 
     github.tagName = tagName;
     grgit.tag.add(name: tagName);
     println("Added tag: ${tagName}");
   }
+}
+
+task dist (dependsOn: ['shadowDistTar', 'shadowDistJar']){
 }
 
 task releaseDist (dependsOn: ['dist']) { 
@@ -305,11 +304,9 @@ prepareGhPages.doFirst {
   githubPages.credentials = new org.ajoberstar.gradle.git.auth.BasicPasswordCredentials(releaseRepoUser, releaseRepoToken)
 }
 
-// PROJECT POST-SETUP SCRIPT
-// -------------------------
+// Project post-setup script
 githubRelease.dependsOn releaseDist
 dist.mustRunAfter setupRelease
-BuildPhotonic3D.mustRunAfter preDist
 publishGhPages.dependsOn javadoc
 publishGhPages.dependsOn apidoc
 
@@ -317,8 +314,10 @@ applicationDistribution.from(testJar) {
   into "lib"
 }
 
-// UTILITY FUNCTIONS
-// -----------------
+//=============================================================================
+// Utility Functions
+//=============================================================================
+
 String osLibDir() {
   switch (osdetector.classifier) {
     case "windows-x86_64":
@@ -336,7 +335,8 @@ String osLibDir() {
   }
 }
 
-String currentCommitHash() {
-  def history = grgit.log(maxCommits: 1)
-  return history[0].id.take(7)
+String input(prompt) {
+  println(prompt)
+  return System.in.newReader().readLine()
 }
+
