@@ -1,8 +1,8 @@
 		<div class="row">
 			<!-- Printables -->
-			<div class="col-sm-5 bootcards-list" id="list">
-				<div class="panel panel-default">
-					<div class="panel-heading">
+			<div class="col-sm-6 bootcards-list " id="list">
+				<div class="panel panel-default ">
+					<div class="panel-heading  " >
 						<i class="fa fa-2x fa-files-o pull-left"></i>
 						<h3 class="panel-title pull-left">Printable Files</h3>
 						<div class="row">
@@ -24,7 +24,10 @@
 						    </div>
 						</div>
 					</div>
-					<div class="list-group">
+				</div>
+				
+				<div class="panel panel-default "> 
+					<div class="list-group u3ds-height-limit">
 						<a ng-class="{active:printable.name == printablesController.currentPrintable.name && printable.extension == printablesController.currentPrintable.extension}" ng-repeat="printable in printablesController.printables"
 							class="list-group-item"
 				 			ng-click="printablesController.changeCurrentPrintable(printable)">
@@ -53,7 +56,7 @@
 			<!-- End Printables -->
 
 			<!-- Preview Box -->
-			<div class="col-sm-7" id="preview" ng-show="printablesController.currentPrintable">
+			<div class="col-sm-6" id="preview" ng-show="printablesController.currentPrintable">
 				<div class="preview-box"> 
 					<div class="panel panel-default">
 						<div class="panel-heading">
