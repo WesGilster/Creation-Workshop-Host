@@ -11,8 +11,8 @@ cpu=`uname -m`
 if [ -z "$HOME" ] || [ "$HOME" == "/" ]; then
   HOME=~root
 fi
-
-DEFAULT_REPO="area515/Creation-Workshop-Host"
+DEFAULT_REPO="u3ds1991/Photonic3D"
+#DEFAULT_REPO="area515/Creation-Workshop-Host"
 CONFIG_PROPS="${HOME}/3dPrinters/config.properties"
 
 echo "Local Config: $CONFIG_PROPS"
@@ -42,16 +42,6 @@ else
 	installDirectory=/opt/cwh
 fi;
 
-#Its pretty hard to keep these updated, let me know when they get too old
-if [ "${cpu}" = "armv6l" -o "${cpu}" = "armv7l" ]; then
-	javaURL="http://download.oracle.com/otn-pub/java/jdk/8u101-b13/jdk-8u101-linux-arm32-vfp-hflt.tar.gz"
-elif [ "${cpu}" = "i686" ]; then
-	javaURL="http://download.oracle.com/otn-pub/java/jdk/8u102-b14/jdk-8u102-linux-i586.tar.gz"
-elif [ "${cpu}" = "x86_64" ]; then
-	javaURL="http://download.oracle.com/otn-pub/java/jdk/8u102-b14/jdk-8u102-linux-x64.tar.gz"
-elif [ "${cpu}" = "aarch64" ]; then
-	javaURL="http://download.oracle.com/otn-pub/java/jdk/8u101-b13/jdk-8u101-linux-arm64-vfp-hflt.tar.gz"
-fi
 
 #This application will always need to have the display set to the following
 export DISPLAY=:0.0
@@ -77,28 +67,7 @@ else
 fi
 
 if [ "$javaMinorVersion" -lt 8 -a "$javaMajorVersion" -le 1 ]; then
-	downloadJavaFile=`echo ${javaURL} | awk -F/ '{print $(NF)}'`
-	echo Either Java is not installed, or an incorrect version of Java is installed. Installing from this URL: ${javaURL}
-	mkdir -p /usr/lib/jvm
-	cd /usr/lib/jvm
-	rm ${downloadJavaFile}
-	wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" "${javaURL}"
-
-	firstSnapshot=`ls -1`
-	echo Unzipping and installing Java now
-	tar xzf ${downloadJavaFile}
-	secondSnapshot=`ls -1`
-	javaInstallFile=`echo "$firstSnapshot"$'\n'"$secondSnapshot" | sort | uniq -u`
-
-	if [ -z "${javaInstallFile}" ]; then
-		echo "A new version of Java is available, please update this script with the proper download URLS from: http://www.oracle.com/technetwork/java/javase/downloads/index.html"
-		exit
-	fi
-
-	ln -sf /usr/lib/jvm/${javaInstallFile}/bin/java /usr/bin/java
-	ln -sf /usr/lib/jvm/${javaInstallFile}/bin/javac /usr/bin/javac
-	ln -sf /usr/lib/jvm/${javaInstallFile}/bin/keytool /usr/bin/keytool
-	rm ${downloadJavaFile}
+	apt install openjdk-8-jdk
 fi
 
 #Determine if a new install is available
@@ -189,4 +158,8 @@ else
 	pkill -9 -f "org.area515.resinprinter.server.Main"
 	echo Starting printer host server
 	java -Xmx512m -Dlog4j.configurationFile=log4j2.properties -Djava.library.path=/usr/lib/jni -cp lib/*:. org.area515.resinprinter.server.Main > log.out 2> log.err &
+fi
+
+if [ -f "afterStart.sh"]; then
+	./afterStart.sh
 fi
