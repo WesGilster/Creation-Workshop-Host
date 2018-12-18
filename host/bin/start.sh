@@ -119,6 +119,19 @@ elif [ "${NETWORK_TAG}" != "${LOCAL_TAG}" -o "$2" == "force" ]; then
 	grep -lU $'\x0D' /etc/init.d/cwhservice | xargs dos2unix
 	chmod +x /etc/init.d/cwhservice
 	rm ${DL_FILE}
+	
+	# Now configuring tinkerboard... U3DS customization
+	# if does not work, remove
+	
+	echo "U3DS customizer begins."
+	systemctl set-default multi-user.target
+        mkdir -p /etc/systemd/system/getty@tty1.service.d/
+        cat > /etc/systemd/system/getty@tty1.service.d/override.conf << 'EOF'
+[Service]
+ExecStart=
+ExecStart=-/sbin/agetty --autologin root %I $TERM
+EOF
+
 else
 	echo No install required
 
