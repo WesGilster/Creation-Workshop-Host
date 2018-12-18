@@ -174,6 +174,6 @@ else
 	java -Xmx512m -Dlog4j.configurationFile=log4j2.properties -Djava.library.path=/usr/lib/jni -cp lib/*:. org.area515.resinprinter.server.Main > log.out 2> log.err &
 fi
 
-if [ -f "afterStart.sh"]; then
+if [ -f "afterStart.sh" ]; then
 	./afterStart.sh
 fi
