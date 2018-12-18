@@ -67,7 +67,7 @@ else
 fi
 
 if [ "$javaMinorVersion" -lt 8 -a "$javaMajorVersion" -le 1 ]; then
-	apt install openjdk-8-jdk
+	apt install openjdk-8-jdk -y
 fi
 
 #Determine if a new install is available
