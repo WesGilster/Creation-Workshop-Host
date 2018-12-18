@@ -67,6 +67,7 @@ else
 fi
 
 if [ "$javaMinorVersion" -lt 8 -a "$javaMajorVersion" -le 1 ]; then
+	apt update
 	apt install openjdk-8-jdk --yes --force-yes
 fi
 
