@@ -67,9 +67,27 @@ else
 fi
 
 if [ "$javaMinorVersion" -lt 8 -a "$javaMajorVersion" -le 1 ]; then
-	apt update
+# 	apt update
 	apt install openjdk-8-jdk --yes --force-yes
 fi
+
+# if xinput is not installed, then install it
+if [ `which xinput` = "" ]; then
+	apt install xinput --yes --force-yes
+fi
+# if xdotool is not installed, then install it
+if [ `which xdotool` = "" ]; then
+	apt install xdotool --yes --force-yes
+fi
+# if unclutter is not installed, then install it
+if [ `which unclutter` = "" ]; then
+	apt install unclutter --yes --force-yes
+fi
+# if chromium:53.0.2785.143-1.1linarostretch1 is not installed, then install it
+if [ `which xinput` = "" ]; then
+	apt install chromium:53.0.2785.143-1.1linarostretch1 --yes --force-yes
+fi
+
 
 #Determine if a new install is available
 echo Checking for new version from Github Repo: ${repo}
