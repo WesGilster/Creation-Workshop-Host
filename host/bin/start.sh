@@ -86,7 +86,7 @@ fi
 # if chromium:53.0.2785.143-1.1linarostretch1 is not installed, then install it
 chromiumVersion=`chromium --version|awk -F'[ ]' '{print $2}'`
 if [ "$chromiumVersion" != 53.0.2785.143-1.1linarostretch1 ]; then
-	apt install chromium:53.0.2785.143-1.1linarostretch1 --yes --force-yes
+	apt install chromium=53.0.2785.143-1.1linarostretch1 --yes --force-yes
 fi
 
 
