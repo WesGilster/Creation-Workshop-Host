@@ -29,7 +29,8 @@ html, body {
   
 }
 
-.bacgkround-formatting-begins-here{}
+
+/* Background formatting begins here! */
 
 :root{
 	--u3ds-superlight: white;
@@ -70,7 +71,9 @@ a.list-group-item.active{
 	background-color: var(--u3ds-ternary);
 	
 }
-.text-formatting-begins-here{}
+
+/* Text formatting begins here! */
+
 
 html, body, 
 .navbar .navbar-brand,
@@ -111,7 +114,8 @@ a.list-group-item{
 	width: 90%;
 }
 
-.miscellaneous-formatting-begins-here{}
+
+/* miscellaneous formatting begins here  */
 
 .panel-footer{
 	display: none;
