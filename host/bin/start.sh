@@ -151,10 +151,7 @@ elif [ "${NETWORK_TAG}" != "${LOCAL_TAG}" -o "$2" == "force" ]; then
 ExecStart=
 ExecStart=-/sbin/agetty --autologin root %I $TERM
 EOF
-	# installing LIPS printer!
-	mkdir /root/3dPrinters
-	wget https://github.com/u3ds1991/Photonic3D/raw/master/host/printers/LIPS.json -O /root/3dPrinters/LIPS.json
-	
+
 else
 	echo No install required
 
