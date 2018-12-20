@@ -1,0 +1,192 @@
+.cwh-text-indent { margin-left:5px; }
+.cwh-text-opacity_50 { opacity: .50 }
+.cwh-text-large-area { margin: 0px !important; height: 200px!important; width:600px !important;}
+.cwh-input-smallbox { padding: 3px 3px; width: 15%}
+
+.bootcards-container,
+.container .bootcards-cards,
+.container .bootcards-list {
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  height: 100%;
+  
+   }
+   
+/*
+ * Fonts customization begins here!
+ * */
+@font-face {
+	font-family: 'AgencyFB';
+	src: url('AgencyFB.ttf');
+}
+  
+html, body {
+  /*overflow-y: scroll;*/
+  overflow-y: hidden;
+  height: 100%;
+  -webkit-overflow-scrolling: touch;
+  
+}
+
+
+/*  Background formatting begins here*/
+
+:root{
+	--u3ds-superlight: white;
+	--u3ds-primary: #174275;
+	--u3ds-secondary: #092642;
+	--u3ds-ternary: #174275;
+	--u3ds-text: #fff;
+}
+html,body{
+	background-color: var(--u3ds-superlight);
+}
+.panel-default .panel-heading{
+	background-color: var(--u3ds-secondary);
+/* 	background-color: transparent; */
+}
+.panel{
+	background-color: var(--u3ds-ternary);
+/* 	background-color: transparent; */
+}
+
+.u3ds-primary-bg {
+	background-color: var(--u3ds-primary); 
+}
+.u3ds-primary-text{
+	color: var(--u3ds-primary);
+}
+.u3ds-secondary-bg{
+	background-color: var(--u3ds-secondary);
+}
+.u3ds-secondary-text{
+	color: var(--u3ds-secondary);
+}
+
+.list-group-item,a.list-group-item{
+	background-color: var(--u3ds-secondary);
+	
+}
+
+a.list-group-item.active{
+	background-color: var(--u3ds-ternary);
+	
+}
+.modal-content{
+	background-color: var(--u3ds-secondary);
+}
+
+.navbar-default .navbar-nav>li>a:focus, .navbar-default .navbar-nav>li>a:hover{
+	background-color: var(--u3ds-ternary);
+}
+a.list-group-item:focus, a.list-group-item:hover, button.list-group-item:focus, button.list-group-item:hover{
+	background-color: var(--u3ds-ternary);
+}
+/*
+ * Text formatting begins here!
+ * */
+
+html, body, 
+.navbar .navbar-brand,
+.navbar-default .navbar-nav>li>a,
+.panel-title {
+	color: var(--u3ds-text);
+}
+
+.navbar-brand{
+	font-family: 'AgencyFB';
+	font-size: 300%;
+}
+
+a.list-group-item.active{
+	color: var(--u3ds-text);
+}
+a.list-group-item .list-group-item-heading, button.list-group-item .list-group-item-heading{
+	color: var(--u3ds-text);
+}
+
+a.list-group-item{
+	color: var(--u3ds-text);
+}
+
+.panel-default .panel-heading{
+	color: var(--u3ds-text);
+}
+
+.navbar-default .navbar-nav>li>a:focus, .navbar-default .navbar-nav>li>a:hover{
+	color: var(--u3ds-text);
+}
+a.list-group-item:focus, a.list-group-item:hover, button.list-group-item:focus, button.list-group-item:hover{
+	color: var(--u3ds-text);
+}
+/* Position formatting begins here! */
+
+
+.u3ds-fixed{
+	position: fixed;
+}
+.u3ds-top{
+	z-index: 99;
+}
+.u3ds-margin{
+	margin-top:100px; 
+}
+.u3ds-padding{
+	padding-top: 100px;
+}
+.u3ds-full-width{
+	width: 90%;
+}
+
+/* miscellaneous cosmetic formatting begins here */
+
+
+
+.panel-footer{
+	display: none;
+}
+
+.list-group-item{
+	margin-left:0;
+	padding-left: 10px;
+}
+.u3ds-height-limit{
+	max-height: 270px;
+	overflow-y: touch;
+	overflow-x: hidden;
+}
+
+.row{
+	margin-right: 0;
+}
+
+/* Hide upload button on main screen! */
+@media only screen and (max-width: 800px), screen and (max-height: 480px){
+	.upload{
+		display: none;
+	}
+	.download{
+		display: none;
+	}
+	
+}
+
+
+/*
+ * apply same radius and shadow to everything
+ * */
+
+.navbar,
+.bootcards,
+.panel-heading,
+.panel-default,
+.panel-default .panel-heading,
+.list-group-item,
+.panel>.list-group .list-group-item, .panel>.panel-collapse>.list-group .list-group-item{
+	border-top-left-radius: 0;
+	border-top-right-radius: 0;
+	border-bottom-left-radius: 10px;
+	border-bottom-right-radius: 10px;
+	box-shadow: 0 2px 8px rgba(0,0,0,0.47);
+}

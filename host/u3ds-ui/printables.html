@@ -1,0 +1,358 @@
+		<div class="row">
+			<!-- Printables -->
+			<div class="col-sm-6 bootcards-list " id="list">
+				<div class="panel panel-default ">
+					<div class="panel-heading  " >
+						<i class="fa fa-2x fa-files-o pull-left"></i>
+						<h3 class="panel-title pull-left">Files</h3>
+						<div class="row">
+							<div class="btn-group pull-right" >
+								<button class="btn btn-success" ng-disabled="printablesController.currentPrintable == null" ng-click="printablesController.printPrintable()" >
+									<b class="fa fa-print"></b>
+									<span>Print</span>
+								</button>
+								<button class="btn btn-danger" ng-disabled="printablesController.currentPrintable == null" ng-click="printablesController.deletePrintable()">
+									<b class="fa fa-trash-o"></b> 
+									<span>Remove</span>
+								</button>
+								<script>
+// 									document.write(window.innerHeight + ";" + window.innerWidth);
+// 									setTimeout(10000,window.location.reload());
+								</script>
+								<button class="btn btn-primary upload" ng-click="printablesController.showUpload()">
+									<b class="fa fa-upload"></b>
+								</button>
+
+								<button class="btn btn-primary download" ng-disabled="printablesController.currentPrintable == null" ng-click="downloadPrintable(printablesController.currentPrintable)">
+									<b class="fa fa-download"></b>
+								</button>
+						    </div>
+						</div>
+					</div>
+				</div>
+				
+				<div class="panel panel-default "> 
+					<div class="list-group u3ds-height-limit">
+						<a ng-class="{active:printable.name == printablesController.currentPrintable.name && printable.extension == printablesController.currentPrintable.extension}" ng-repeat="printable in printablesController.printables"
+							class="list-group-item"
+				 			ng-click="printablesController.changeCurrentPrintable(printable)"
+				 			ng-style="{'display':(printable.extension=='cws')?'block':'none'}">
+								<i class="pull-left fa fa-2x" ng-class="printablesController.getPrintableIconClass(printable)"></i>
+								<h4 class="list-group-item-heading">
+									{{printable.name}}
+								</h4>
+								<p class="list-group-item-text">
+									Size: {{printable.size | number}}  
+								</p>
+								<p class="list-group-item-text">
+									<span class="pull-left">Date: {{ (printable.modifiedDate) }}</span>
+<!-- 									<span class="pull-left">extension: {{ printable.extension }}</span> -->
+									
+									
+<!-- 									<span class="pull-right">{{printable.printFileProcessor.friendlyName}}</span> -->
+								</p>
+						</a>
+					</div>
+					<div class="panel-footer">
+						<button class="btn btn-primary btn-sm" ng-click="printablesController.goToSlacer()">
+							<b class="fa fa-external-link"></b> 
+							<span>Open SLAcer.js</span>
+						</button>
+						<small class="pull-left">{{releaseTagName}}</small>
+					</div>								
+				</div>
+			</div>
+			<!-- End Printables -->
+
+			<!-- Preview Box -->
+			<div class="col-sm-6" id="preview" ng-show="printablesController.currentPrintable">
+				<div class="preview-box"> 
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<i class="fa fa-2x fa-desktop pull-left"></i>
+							<h3 class="panel-title pull-left">
+								Preview of '{{printablesController.currentPrintable.name}}'
+							</h3>
+							<span class="btn-group pull-right" >
+								<button class="btn btn-success btn-sm" ng-click="printablesController.setProjectImage()" ng-disabled="printablesController.errorMsg || printablesController.projectImage == 'fa-refresh fa-spin'">
+									<b class="fa" ng-class="printablesController.projectImage"></b> 
+									<b class="cwh-text-indent">Project Image</b>
+								</button>
+							</span>
+							<div class="row">
+							</div>
+						</div>
+						<div class="panel-body">
+							<i class="pull-left fa fa-exclamation-triangle" ng-show="printablesController.errorMsg">
+								<b>{{printablesController.errorMsg}}</b>
+							</i>
+							<img ng-show="!printablesController.errorMsg" ng-src="{{printablesController.currentPreviewImg}}" handle-error class="img-responsive" style="width:100%; height:100%;"/>
+						</div>
+						
+					</div>
+				</div>
+			</div>
+			<!-- End Preview Box -->
+
+			<!-- Customizer -->
+			
+			<div hidden class="col-sm-7 bootcards-list pull-right" id="controls" ng-show="!printablesController.errorMsg && printablesController.currentPrintable">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<i class="fa fa-2x fa-magic pull-left"></i>
+						<h3 class="panel-title pull-left">Customizer
+						</h3>
+						<div class="row">
+							<div class="btn-group pull-right" >
+								<button class="btn btn-success" ng-click="printablesController.printWithCustomizer()">
+										<i class="fa fa-print"></i> 
+										<span>Print with Customizations</span>	
+								</button>
+								<button class="btn btn-danger" ng-click="printablesController.resetTranslation()">
+									<!-- <i class="fa fa-undo pull-left"></i>  -->
+									<b class="fa fa-undo"></b> 
+									<span>Reset</span>
+								</button>							
+							</div>
+						</div>
+					</div>
+					<div class="list-group">
+						<div class="list-group-item">
+							<i class="fa fa-2x fa-asl-interpreting pull-left"></i>
+							<h4>Flip</h4>
+							<span class="btn-group" >
+								<a class="btn btn-success btn-sm" ng-model="printablesController.currentCustomizer.affineTransformSettings.yflip" uib-btn-checkbox ng-click="printablesController.saveCustomizer()">
+									<b class="fa fa-exchange fa-rotate-90"></b> 
+									<b class="cwh-text-indent">Vertical</b>
+								</a>
+								<a class="btn btn-success btn-sm" ng-model="printablesController.currentCustomizer.affineTransformSettings.xflip" uib-btn-checkbox ng-click="printablesController.saveCustomizer()">
+									<b class="fa fa-exchange"></b> 
+									<b class="cwh-text-indent">Horizontal</b>
+								</a>
+								<!--<label class="btn btn-primary fa fa-exchange fa-rotate-90" ng-model="printablesController.currentCustomizer.affineTransformSettings.yflip" uib-btn-checkbox ng-click="printablesController.saveCustomizer()">Vertical</label>
+	        					<label class="btn btn-primary fa fa-exchange" ng-model="printablesController.currentCustomizer.affineTransformSettings.xflip" uib-btn-checkbox ng-click="printablesController.saveCustomizer()">Horizontal</label>-->
+							</span>
+						</div>
+						
+						<div class="list-group-item">
+				 			<i class="fa fa-2x fa-superscript pull-left"></i>						
+							<h4>Scale</h4>
+							<div ng-show="!printablesController.currentPrintable.printFileProcessor.threeDimensionalGeometryAvailable">
+								<h6>Scale Y: {{printablesController.currentCustomizer.affineTransformSettings.yscale}}</h6>
+								<span class="btn-group" >
+									<b class="btn btn-sm btn-danger fa fa-angle-double-down" ng-click="printablesController.changeScale(0, -.5, 0)">.5</b> 
+									<a class="btn btn-sm btn-danger fa fa-angle-down" ng-click="printablesController.changeScale(0, -.1, 0)">.1</a>
+									<a class="btn btn-sm btn-danger fa fa-angle-down" ng-click="printablesController.changeScale(0, -.01, 0)">.01</a>
+									<a class="btn btn-sm btn-success fa fa-angle-up" ng-click="printablesController.changeScale(0, .01, 0)">.01</a>
+									<a class="btn btn-sm btn-success fa fa-angle-up" ng-click="printablesController.changeScale(0, .1, 0)">.1</a>
+									<a class="btn btn-sm btn-success fa fa-angle-double-up" ng-click="printablesController.changeScale(0, .5, 0)">.5</a>
+								</span>	
+							</div>
+							<div ng-show="!printablesController.currentPrintable.printFileProcessor.threeDimensionalGeometryAvailable">
+								<h6>Scale X: {{printablesController.currentCustomizer.affineTransformSettings.xscale}}</h6>
+								<span class="btn-group" >
+									<b class="btn btn-sm btn-danger fa fa-angle-double-down" ng-click="printablesController.changeScale(-.5, 0, 0)">.5</b> 
+									<a class="btn btn-sm btn-danger fa fa-angle-down" ng-click="printablesController.changeScale(-.1, 0, 0)">.1</a>
+									<a class="btn btn-sm btn-danger fa fa-angle-down" ng-click="printablesController.changeScale(-.01, 0, 0)">.01</a>
+									<a class="btn btn-sm btn-success fa fa-angle-up" ng-click="printablesController.changeScale(.01, 0, 0)">.01</a>
+									<a class="btn btn-sm btn-success fa fa-angle-up" ng-click="printablesController.changeScale(.1, 0, 0)">.1</a>
+									<a class="btn btn-sm btn-success fa fa-angle-double-up" ng-click="printablesController.changeScale(.5, 0, 0)">.5</a>
+								</span>
+							</div>
+							<div ng-show="printablesController.currentPrintable.printFileProcessor.threeDimensionalGeometryAvailable">
+								<h6>3d Scale: {{printablesController.currentCustomizer.zscale}}</h6>
+								<span class="btn-group" >
+									<b class="btn btn-sm btn-danger fa fa-angle-double-down" ng-click="printablesController.changeScale(-.5, -.5, -.5)">.5</b> 
+									<a class="btn btn-sm btn-danger fa fa-angle-down" ng-click="printablesController.changeScale(-.1, -.1, -.1)">.1</a>
+									<a class="btn btn-sm btn-danger fa fa-angle-down" ng-click="printablesController.changeScale(-.01, -.01, -.01)">.01</a>
+									<a class="btn btn-sm btn-success fa fa-angle-up" ng-click="printablesController.changeScale(.01, .01, .01)">.01</a>
+									<a class="btn btn-sm btn-success fa fa-angle-up" ng-click="printablesController.changeScale(.1, .1, .1)">.1</a>
+									<a class="btn btn-sm btn-success fa fa-angle-double-up" ng-click="printablesController.changeScale(.5, .5, .5)">.5</a>
+								</span>
+							</div>
+						</div>
+
+						<div class="list-group-item">
+				 			<i class="fa fa-2x fa-repeat pull-left"></i>						
+							<h4>Rotation</h4>
+							<h6>Degrees: {{printablesController.currentCustomizer.affineTransformSettings.rotation}}</h6>
+							<span class="btn-group" >
+								<b class="btn btn-sm btn-danger fa fa-angle-double-down" ng-click="printablesController.changeRotation(-45)">45</b> 
+								<a class="btn btn-sm btn-danger fa fa-angle-down" ng-click="printablesController.changeRotation(-10)">10</a>
+								<a class="btn btn-sm btn-danger fa fa-angle-down" ng-click="printablesController.changeRotation(-1)">1</a>
+								<a class="btn btn-sm btn-success fa fa-angle-up" ng-click="printablesController.changeRotation(1)">1</a>
+								<a class="btn btn-sm btn-success fa fa-angle-up" ng-click="printablesController.changeRotation(10)">10</a>
+								<a class="btn btn-sm btn-success fa fa-angle-double-up" ng-click="printablesController.changeRotation(45)">45</a>
+							</span>
+						</div>
+
+						<div class="list-group-item">
+							<i class="fa fa-2x fa-italic pull-left"></i>
+							<h4>Shear</h4>
+							<h6>Y tilt: {{printablesController.currentCustomizer.affineTransformSettings.yshear}}</h6>
+							<span class="btn-group" >
+								<b class="btn btn-sm btn-danger fa fa-angle-double-down" ng-click="printablesController.changeShear(0, -.5)">.5</b> 
+								<a class="btn btn-sm btn-danger fa fa-angle-down" ng-click="printablesController.changeShear(0, -.1)">.1</a>
+								<a class="btn btn-sm btn-danger fa fa-angle-down" ng-click="printablesController.changeShear(0, -.01)">.01</a>
+								<a class="btn btn-sm btn-success fa fa-angle-up" ng-click="printablesController.changeShear(0, .01)">.01</a>
+								<a class="btn btn-sm btn-success fa fa-angle-up" ng-click="printablesController.changeShear(0, .1)">.1</a>
+								<a class="btn btn-sm btn-success fa fa-angle-double-up" ng-click="printablesController.changeShear(0, .5)">.5</a>
+							</span>					
+							<h6>X tilt: {{printablesController.currentCustomizer.affineTransformSettings.xshear}}</h6>
+							<span class="btn-group" >
+								<b class="btn btn-sm btn-danger fa fa-angle-double-left" ng-click="printablesController.changeShear(-.5, 0)">.5</b> 
+								<a class="btn btn-sm btn-danger fa fa-angle-left" ng-click="printablesController.changeShear(-.1, 0)">.1</a>
+								<a class="btn btn-sm btn-danger fa fa-angle-left" ng-click="printablesController.changeShear(-.01, 0)">.01</a>
+								<a class="btn btn-sm btn-success fa fa-angle-right" ng-click="printablesController.changeShear(.01, 0)">.01</a>
+								<a class="btn btn-sm btn-success fa fa-angle-right" ng-click="printablesController.changeShear(.1, 0)">.1</a>
+								<a class="btn btn-sm btn-success fa fa-angle-double-right" ng-click="printablesController.changeShear(.5, 0)">.5</a>
+							</span>
+						</div>			
+					
+						<div class="list-group-item">
+							<i class="fa fa-2x fa-arrows pull-left"></i>
+							<h4>Position</h4>
+							<h6>Translate image on Y axis: {{printablesController.currentCustomizer.affineTransformSettings.ytranslate}}</h6>
+							<span class="btn-group" >
+								<b class="btn btn-sm btn-danger fa fa-angle-double-down" ng-click="printablesController.changeTranslate(0, 100)"> 100</b> 
+								<a class="btn btn-sm btn-danger fa fa-angle-down" ng-click="printablesController.changeTranslate(0, 10)"> 10</a>
+								<a class="btn btn-sm btn-danger fa fa-angle-down" ng-click="printablesController.changeTranslate(0, 1)"> 1</a>
+								<a class="btn btn-sm btn-success fa fa-angle-up" ng-click="printablesController.changeTranslate(0, -1)"> 1</a>
+								<a class="btn btn-sm btn-success fa fa-angle-up" ng-click="printablesController.changeTranslate(0, -10)"> 10</a>
+								<a class="btn btn-sm btn-success fa fa-angle-double-up" ng-click="printablesController.changeTranslate(0, -100)"> 100</a>
+							</span>
+							<h6>Translate image on X axis: {{printablesController.currentCustomizer.affineTransformSettings.xtranslate}}</h6>
+							<span class="btn-group" >
+								<b class="btn btn-sm btn-danger fa fa-angle-double-left" ng-click="printablesController.changeTranslate(-100, 0)"> 100</b> 
+								<a class="btn btn-sm btn-danger fa fa-angle-left" ng-click="printablesController.changeTranslate(-10, 0)"> 10</a>
+								<a class="btn btn-sm btn-danger fa fa-angle-left" ng-click="printablesController.changeTranslate(-1, 0)"> 1</a>
+								<a class="btn btn-sm btn-success fa fa-angle-right" ng-click="printablesController.changeTranslate(1, 0)"> 1</a>
+								<a class="btn btn-sm btn-success fa fa-angle-right" ng-click="printablesController.changeTranslate(10, 0)"> 10</a>
+								<a class="btn btn-sm btn-success fa fa-angle-double-right" ng-click="printablesController.changeTranslate(100, 0)">100</a>
+							</span>
+						</div>
+						<div class="list-group-item">
+							<i class="fa fa-2x fa-list-ol pull-left"></i>
+							<h4>Starting slice #</h4>
+							<div class="input-group"
+								cwh-spinner
+								placeholder="Slice #"
+								min="0"
+								max="500000000000"
+								inc="1"
+								goClick="printablesController.clearExternalCacheAndSaveCustomizer()"
+								incClick="printablesController.clearExternalCacheAndSaveCustomizer()"
+								decClick="printablesController.clearExternalCacheAndSaveCustomizer()"
+								ng-model="printablesController.currentCustomizer.nextSlice">
+							</div>
+						</div>
+					</div>
+					<!-- End list group -->
+					<div class="panel-footer">
+						<span ng-include="'cardFooter.html'"></span>
+					</div>
+				</div>
+			</div>
+			
+			<!-- End Customizer -->
+			
+			<!-- Advanced Customizations -->
+			<div hidden class="col-sm-7 bootcards-list pull-right" id="controls" ng-show="!printablesController.errorMsg && printablesController.currentPrintable">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<i class="fa fa-2x fa-graduation-cap pull-left"></i>
+						<h3 class="panel-title pull-left">Advanced Customizations</h3>
+						<div class="row"></div>
+					</div>
+					<div class="list-group">
+						<div class="list-group-item">
+							<i class="fa fa-2x fa-circle pull-left"></i>
+							<h4>Annotations</h4>
+							<button class="btn btn-primary btn-sm" ng-click="printablesController.writeDrainHoldCode()">
+								<b class="fa fa-thumbs-o-up"></b> 
+								<span>Drain Hole</span>
+							</button>
+							<button class="btn btn-primary btn-sm" ng-click="printablesController.writeCenteredTextCode()">
+								<b class="fa fa-thumbs-o-up"></b> 
+								<span>Serial Number</span>
+							</button>
+						</div>
+						
+						<div class="list-group-item">
+				 			<i class="fa fa-2x fa-th-large pull-left"></i>
+							<h4>Duplication grid</h4>
+							<button class="btn btn-primary btn-sm" ng-click="printablesController.writeDuplicationGridCode()">
+								<b class="fa fa-thumbs-o-up"></b>
+								<span>Normal</span>
+							</button>
+							<button class="btn btn-primary btn-sm" ng-click="printablesController.writeDuplicationGridWithVariableExposureTimeCode()">
+								<b class="fa fa-thumbs-o-up"></b>
+								<span>Variable Exposure Time</span>
+							</button>				
+							<button class="btn btn-primary btn-sm" ng-click="printablesController.writeDuplicationGridWithSerialNumber()">
+								<b class="fa fa-thumbs-o-up"></b>
+								<span>With Serial Number</span>
+							</button>
+						</div>
+						
+						<div class="list-group-item">
+				 			<i class="fa fa-2x fa-puzzle-piece pull-left"></i>
+							<h4>Misc</h4>
+							<button class="btn btn-primary btn-sm" ng-click="printablesController.write3dTwistCode()">
+								<b class="fa fa-retweet"></b> 
+								<span>3d Spiral</span>
+							</button> 
+							<button class="btn btn-primary btn-sm" ng-click="printablesController.correctAspectRatio()">
+								<b class="fa fa-chain"></b> 
+								<span>Correct Aspect Ratio</span>
+							</button> 
+						</div>
+						
+						<div class="list-group-item">
+				 			<i class="fa fa-2x fa-paint-brush pull-left"></i>						
+							<h4>Image Manipulation Calculator</h4>
+							<div class="input-group"
+								cwh-testscript
+								placeholder="(no return value required yet)"
+								helpURL="<a href='https://docs.oracle.com/javase/8/docs/api/java/awt/geom/AffineTransform.html'>Image Transformation</a><br>
+								<a href='https://docs.oracle.com/javase/8/docs/api/java/awt/image/BufferedImage.html'>Image Manipulation</a><br>
+								<a href='https://docs.oracle.com/javase/8/docs/api/java/awt/Graphics2D.html'>Writing shapes</a><br>
+								<a href='https://docs.oracle.com/javase/8/docs/api/java/awt/image/WritableRaster.html'>Setting pixels</a><br>
+								<a href='https://wiki.photonic3d.com/doku.php?id=calculators'>Javascript Variables</a><br>
+								<a href='http://www.w3schools.com/js/'>Javascript help</a><br>
+								<a href='https://wiki.photonic3d.com/doku.php?id=calculator_examples'>A Few Examples</a>"
+								testClick="printablesController.testScript('Image manipulation script', 'java.lang.Void', printablesController.currentCustomizer.imageManipulationCalculator)"
+								ng-model="printablesController.currentCustomizer.imageManipulationCalculator">
+							</div>
+						</div>
+						<div class="list-group-item">
+				 			<i class="fa fa-2x fa-map-o pull-left"></i>
+							<h4>AffineTransform Calculator</h4>
+							<div class="input-group"
+								cwh-testscript
+								placeholder="java.awt.geom.AffineTransform"
+								helpURL="<a href='https://docs.oracle.com/javase/8/docs/api/java/awt/geom/AffineTransform.html'>Image Transformation</a><br>
+								<a href='https://wiki.photonic3d.com/doku.php?id=calculators'>Javascript Variables</a><br>
+								<a href='http://www.w3schools.com/js/'>Javascript help</a><br>
+								<a href='https://wiki.photonic3d.com/doku.php?id=calculator_examples'>A Few Examples</a>"
+								testClick="printablesController.testScript('2D AffineTransform creation script', 'java.awt.geom.AffineTransform', printablesController.currentCustomizer.affineTransformSettings.affineTransformScriptCalculator)"
+								ng-model="printablesController.currentCustomizer.affineTransformSettings.affineTransformScriptCalculator">
+							</div>
+						</div>
+					</div>
+					<!-- End list group -->
+					<div class="panel-footer">
+						<span ng-include="'cardFooter.html'"></span>
+					</div>
+				</div>
+			</div>
+			<!-- End Customizer -->
+
+		</div>
+	<div class="modal fade" data-backdrop="static" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="editModal" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<span ng-include="'upload.html'"></span>
+			</div>
+		</div>
+	</div>
