@@ -61,12 +61,6 @@
 		    )
 		};
 		
-		this.saveSkin = function saveSkin(skin){
-		     $http.put("services/settings/skins", skin).then(function () {
-		    	 controller.loadSkins();
-	         })
-		};
-		
 		//TODO: this needs to be attached to more than just the cancel button so that we can kill the web socket.
 		this.cancelRestartProcess = function cancelRestartProcess() {
 			$http.post("services/machine/cancelNetworkRestartProcess").then(
@@ -96,15 +90,6 @@
 		    )
 		};
 		
-		this.loadSkins = function loadSkins() {
-		  	$http.get("services/settings/skins/list").success(
-				function (data) {
-					$scope.availableSkins = data;
-					console.log(data);
-				}
-			);
-		}
-		
 		$http.get("services/settings/emailSettings").success(
 	    		function (data) {
 	    			controller.emailSettings = data;
@@ -117,6 +102,5 @@
 	    		})
 	
 		attachToHost();
-		this.loadSkins();
 	}])
 })();

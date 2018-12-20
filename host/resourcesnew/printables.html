@@ -1,8 +1,8 @@
 		<div class="row">
 			<!-- Printables -->
-			<div class="col-sm-6 bootcards-list " id="list">
-				<div class="panel panel-default ">
-					<div class="panel-heading  " >
+			<div class="col-sm-5 bootcards-list" id="list">
+				<div class="panel panel-default">
+					<div class="panel-heading">
 						<i class="fa fa-2x fa-files-o pull-left"></i>
 						<h3 class="panel-title pull-left">Printable Files</h3>
 						<div class="row">
@@ -16,25 +16,19 @@
 									<span>Remove</span>
 								</button>
 								<button class="btn btn-primary" ng-click="printablesController.showUpload()">
-									<b class="fa fa-upload"></b>
+									<b class="fa fa-upload"></b> 
+									<span>Upload</span>
 								</button>
-								<button class="btn btn-primary" ng-disabled="printablesController.currentPrintable == null" ng-click="downloadPrintable(printablesController.currentPrintable)">
-									<b class="fa fa-download"></b>
-								</button>
+								
 						    </div>
 						</div>
 					</div>
-				</div>
-				
-				<div class="panel panel-default "> 
-					<div class="list-group u3ds-height-limit">
-						<a ng-class="{active:printable.name == printablesController.currentPrintable.name && printable.extension == printablesController.currentPrintable.extension}" ng-repeat="printable in printablesController.printables"
+					<div class="list-group">
+						<a ng-class="{active:printable.name == printablesController.currentPrintable.name}" ng-repeat="printable in printablesController.printables"
 							class="list-group-item"
 				 			ng-click="printablesController.changeCurrentPrintable(printable)">
 								<i class="pull-left fa fa-2x" ng-class="printablesController.getPrintableIconClass(printable)"></i>
-								<h4 class="list-group-item-heading">
-									{{printable.name}}
-								</h4>
+								<h4 class="list-group-item-heading">{{printable.name}}</h4>
 								<p class="list-group-item-text">
 									Size: {{printable.size | number}}  
 								</p>
@@ -56,19 +50,21 @@
 			<!-- End Printables -->
 
 			<!-- Preview Box -->
-			<div class="col-sm-6" id="preview" ng-show="printablesController.currentPrintable">
+			<div class="col-sm-7" id="preview" ng-show="printablesController.currentPrintable">
 				<div class="preview-box"> 
 					<div class="panel panel-default">
 						<div class="panel-heading">
 							<i class="fa fa-2x fa-desktop pull-left"></i>
-							<h3 class="panel-title pull-left">
-								Preview box for: {{printablesController.currentPrintable.name}}
+							<h3 class="panel-title pull-left">Preview box for: {{printablesController.currentPrintable.name}}
 							</h3>
 							<span class="btn-group pull-right" >
-								<button class="btn btn-success btn-sm" ng-click="printablesController.setProjectImage()" ng-disabled="printablesController.errorMsg || printablesController.projectImage == 'fa-refresh fa-spin'">
-									<b class="fa" ng-class="printablesController.projectImage"></b> 
-									<b class="cwh-text-indent">Project Image</b>
-								</button>
+								<a class="btn btn-success btn-sm" ng-click="printablesController.setProjectImage(true)" ng-disabled="printablesController.projectImage || printablesController.errorMsg">
+									<b class="fa fa-sun-o"></b> 
+									<b class="cwh-text-indent">Project Image On Printer</b>
+								</a>
+								<a class="btn btn-danger btn-sm" ng-click="printablesController.setProjectImage(false)" ng-disabled="!printablesController.projectImage || printablesController.errorMsg">
+									<b class="cwh-text-indent">Disable</b>
+								</a>
 							</span>
 							<div class="row">
 							</div>
@@ -79,7 +75,6 @@
 							</i>
 							<img ng-show="!printablesController.errorMsg" ng-src="{{printablesController.currentPreviewImg}}" handle-error class="img-responsive" style="width:100%; height:100%;"/>
 						</div>
-						
 					</div>
 				</div>
 			</div>
@@ -256,14 +251,10 @@
 					<div class="list-group">
 						<div class="list-group-item">
 							<i class="fa fa-2x fa-circle pull-left"></i>
-							<h4>Annotations</h4>
+							<h4>Drain hole</h4>
 							<button class="btn btn-primary btn-sm" ng-click="printablesController.writeDrainHoldCode()">
 								<b class="fa fa-thumbs-o-up"></b> 
-								<span>Drain Hole</span>
-							</button>
-							<button class="btn btn-primary btn-sm" ng-click="printablesController.writeCenteredTextCode()">
-								<b class="fa fa-thumbs-o-up"></b> 
-								<span>Serial Number</span>
+								<span>Create</span>
 							</button>
 						</div>
 						
@@ -272,28 +263,16 @@
 							<h4>Duplication grid</h4>
 							<button class="btn btn-primary btn-sm" ng-click="printablesController.writeDuplicationGridCode()">
 								<b class="fa fa-thumbs-o-up"></b>
-								<span>Normal</span>
-							</button>
-							<button class="btn btn-primary btn-sm" ng-click="printablesController.writeDuplicationGridWithVariableExposureTimeCode()">
-								<b class="fa fa-thumbs-o-up"></b>
-								<span>Variable Exposure Time</span>
-							</button>				
-							<button class="btn btn-primary btn-sm" ng-click="printablesController.writeDuplicationGridWithSerialNumber()">
-								<b class="fa fa-thumbs-o-up"></b>
-								<span>With Serial Number</span>
+								<span>Create</span>
 							</button>
 						</div>
 						
 						<div class="list-group-item">
-				 			<i class="fa fa-2x fa-puzzle-piece pull-left"></i>
-							<h4>Misc</h4>
+				 			<i class="fa fa-2x fa-retweet pull-left"></i>
+							<h4>3D spiral</h4>
 							<button class="btn btn-primary btn-sm" ng-click="printablesController.write3dTwistCode()">
-								<b class="fa fa-retweet"></b> 
-								<span>3d Spiral</span>
-							</button> 
-							<button class="btn btn-primary btn-sm" ng-click="printablesController.correctAspectRatio()">
-								<b class="fa fa-chain"></b> 
-								<span>Correct Aspect Ratio</span>
+								<b class="fa fa-thumbs-o-up"></b> 
+								<span>Create</span>
 							</button> 
 						</div>
 						
@@ -303,27 +282,18 @@
 							<div class="input-group"
 								cwh-testscript
 								placeholder="(no return value required yet)"
-								helpURL="<a href='https://docs.oracle.com/javase/8/docs/api/java/awt/geom/AffineTransform.html'>Image Transformation</a><br>
-								<a href='https://docs.oracle.com/javase/8/docs/api/java/awt/image/BufferedImage.html'>Image Manipulation</a><br>
-								<a href='https://docs.oracle.com/javase/8/docs/api/java/awt/Graphics2D.html'>Writing shapes</a><br>
-								<a href='https://docs.oracle.com/javase/8/docs/api/java/awt/image/WritableRaster.html'>Setting pixels</a><br>
-								<a href='https://wiki.photonic3d.com/doku.php?id=calculators'>Javascript Variables</a><br>
-								<a href='http://www.w3schools.com/js/'>Javascript help</a><br>
-								<a href='https://wiki.photonic3d.com/doku.php?id=calculator_examples'>A Few Examples</a>"
+								helpURL="https://docs.oracle.com/javase/8/docs/api/java/awt/Graphics.html"
 								testClick="printablesController.testScript('Image manipulation script', 'java.lang.Void', printablesController.currentCustomizer.imageManipulationCalculator)"
 								ng-model="printablesController.currentCustomizer.imageManipulationCalculator">
 							</div>
 						</div>
 						<div class="list-group-item">
-				 			<i class="fa fa-2x fa-map-o pull-left"></i>
+				 			<i class="fa fa-2x fa-map-o pull-left"></i>						
 							<h4>AffineTransform Calculator</h4>
 							<div class="input-group"
 								cwh-testscript
 								placeholder="java.awt.geom.AffineTransform"
-								helpURL="<a href='https://docs.oracle.com/javase/8/docs/api/java/awt/geom/AffineTransform.html'>Image Transformation</a><br>
-								<a href='https://wiki.photonic3d.com/doku.php?id=calculators'>Javascript Variables</a><br>
-								<a href='http://www.w3schools.com/js/'>Javascript help</a><br>
-								<a href='https://wiki.photonic3d.com/doku.php?id=calculator_examples'>A Few Examples</a>"
+								helpURL="https://docs.oracle.com/javase/8/docs/api/java/awt/geom/AffineTransform.html"
 								testClick="printablesController.testScript('2D AffineTransform creation script', 'java.awt.geom.AffineTransform', printablesController.currentCustomizer.affineTransformSettings.affineTransformScriptCalculator)"
 								ng-model="printablesController.currentCustomizer.affineTransformSettings.affineTransformScriptCalculator">
 							</div>

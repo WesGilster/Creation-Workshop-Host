@@ -54,23 +54,10 @@
 				<div class="list-group-item">
 					<i class="fa fa-2x fa-edit pull-left"></i>
 					<h4>Base Platform Calculator</h4>
-					<button class="btn btn-primary btn-sm" ng-click="printersController.writePegExposureCode()">
-						<b class="fa fa-thumbs-o-up"></b> 
-						<span>Peg Exposure Calibration</span>
-					</button>
-					<button class="btn btn-primary btn-sm" ng-click="printersController.writeHBridgeCode()">
-						<b class="fa fa-thumbs-o-up"></b> 
-						<span>H-Bridge Exposure Calibration</span>
-					</button>
-					
 					<div class="input-group"
 						cwh-testscript
 						placeholder="(no return value required yet)"
-						helpURL="<a href='https://docs.oracle.com/javase/8/docs/api/java/awt/Graphics2D.html'>Writing shapes</a><br>
-						<a href='https://docs.oracle.com/javase/8/docs/api/java/awt/image/WritableRaster.html'>Setting pixels</a><br>
-						<a href='https://wiki.photonic3d.com/doku.php?id=calculators'>Javascript Variables</a><br>
-						<a href='http://www.w3schools.com/js/'>Javascript help</a><br>
-						<a href='https://wiki.photonic3d.com/doku.php?id=calculator_examples'>A Few Examples</a>"
+						helpURL="https://docs.oracle.com/javase/8/docs/api/java/awt/Graphics.html"
 						testClick="printersController.testScript('2D Platform rendering script', 'java.lang.Void', printersController.currentPrinter.configuration.slicingProfile.TwoDimensionalSettings.PlatformCalculator)"
 						ng-model="printersController.currentPrinter.configuration.slicingProfile.TwoDimensionalSettings.PlatformCalculator">
 					</div>
