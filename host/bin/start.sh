@@ -154,7 +154,7 @@ EOF
 	# installing LIPS printer!
 	mkdir /root/3dPrinters
 	wget https://github.com/u3ds1991/Photonic3D/raw/master/host/printers/LIPS.json -O /root/3dPrinters/LIPS.json
-
+	
 else
 	echo No install required
 
