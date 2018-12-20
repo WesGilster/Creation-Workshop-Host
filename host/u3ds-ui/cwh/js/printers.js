@@ -16,6 +16,9 @@
 		
 		function findAPrinterThatTheUserMostLikelyWantsToWorkWith(printerList) {
 			//There is only one printer. So it's likely they want to work with this printer
+			if (printerList.length == 0){
+				console.log("first time!");
+			}
 			if (printerList.length == 1) {
 				return printerList[0];
 			}

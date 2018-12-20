@@ -1,4 +1,4 @@
-	<!--
+<!--	
 	<div class="row">
 		<div class="row">
 			<div class="col-sm-5 bootcards-list">
@@ -39,7 +39,9 @@
 								<i class="pull-left fa fa-2x fa-exclamation-triangle"></i>
 								<h3 class="list-group-item-heading" >Haven't setup a printer?<br>Try one of these...</h3>
 							</div>
+							
 							<a class="list-group-item" ng-show="printers.length == 0" ng-repeat="printer in communityPrinters" ng-click="installCommunityPrinter(printer)">
+							{{printer}}
 								<i class="pull-left fa fa-2x fa-print"></i>
 								<h4 class="list-group-item-heading">Printer: {{printer.name}}</h4>
 								<p class="list-group-item-text">
@@ -90,4 +92,5 @@
 			</div>
 		</div>
 	</div>
-	-->
+
+-->
