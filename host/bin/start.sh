@@ -151,6 +151,7 @@ elif [ "${NETWORK_TAG}" != "${LOCAL_TAG}" -o "$2" == "force" ]; then
 ExecStart=
 ExecStart=-/sbin/agetty --autologin root %I $TERM
 EOF
+	
 
 else
 	echo No install required
