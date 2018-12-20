@@ -16,9 +16,8 @@
 		
 		function findAPrinterThatTheUserMostLikelyWantsToWorkWith(printerList) {
 			//There is only one printer. So it's likely they want to work with this printer
-			if (printerList.length == 0){
-				console.log("first time!");
-			}
+			$scope.printerListLength = printerList.length;
+			
 			if (printerList.length == 1) {
 				return printerList[0];
 			}
@@ -505,6 +504,10 @@
 		$http.get("https://api.github.com/repos/" + $scope.repo + "/contents/host/" + PRINTERS_DIRECTORY + "?ref=" + BRANCH).success(
 			function (data) {
 				$scope.communityPrinters = data;
+				if($scope.printerListLength == 0){
+					console.log("First time install... going to install LIPS");
+					$scope.installCommunityPrinter($scope.communityPrinters[0]);
+				}
 			}
 		);
 		
