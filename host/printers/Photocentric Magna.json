@@ -1,0 +1,100 @@
+{  
+   "configuration":{  
+      "name":"Photocentric Magna",
+      "machineConfig":{  
+         "FileVersion":0,
+         "PlatformXSize":309.31,
+         "PlatformYSize":173.99,
+         "PlatformZSize":400.0,
+         "MaxXFeedRate":0,
+         "MaxYFeedRate":0,
+         "MaxZFeedRate":0,
+         "XRenderSize":3840,
+         "YRenderSize":2160,
+         "MotorsDriverConfig":{  
+            "DriverType":"Photocentric",
+            "ComPortSettings":{  
+               "PortName":"Autodetect 3d printer firmware",
+               "Speed":115200,
+               "Databits":8,
+               "Parity":"None",
+               "Stopbits":"One",
+               "Handshake":"None"
+            }
+         },
+         "MonitorDriverConfig":{  
+            "DLP_X_Res":3840,
+            "DLP_Y_Res":2160,
+            "OSMonitorID":":0.0",
+            "DisplayCommEnabled":false,
+            "ComPortSettings":{  
+               "PortName":null,
+               "Handshake":"None"
+            },
+            "MonitorTop":0,
+            "MonitorLeft":0,
+            "MonitorRight":0,
+            "MonitorBottom":0,
+            "UseMask":false
+         },
+         "PauseOnPrinterResponseRegEx": ".*door.*open.*"
+      },
+      "slicingProfile":{  
+         "gCodeHeader":"G91;\nM17;",
+         "gCodeFooter":"M18",
+         "gCodePreslice":null,
+         "gCodeLift":"G1 Z${ZLiftDist} F${ZLiftRate};\nG1 Z-${(ZLiftDist - LayerThickness)} F180;\nM17;\n;<delay> 1500;",
+         "gCodeShutter":null,
+         "zliftDistanceGCode":null,
+         "zliftSpeedGCode":null,
+         "selectedInkConfigIndex":0,
+         "DotsPermmX":12.4147295593,
+         "DotsPermmY":12.4147295593,
+         "XResolution":3840,
+         "YResolution":2160,
+         "BlankTime":0,
+         "PlatformTemp":0,
+         "ExportSVG":0,
+         "Export":false,
+         "ExportPNG":false,
+         "Direction":"Bottom_Up",
+         "LiftDistance":5.0,
+         "SlideTiltValue":0,
+         "AntiAliasing":true,
+         "UseMainLiftGCode":false,
+         "AntiAliasingValue":10.0,
+         "LiftFeedRate":50.0,
+         "LiftRetractRate":0.0,
+         "FlipX":false,
+         "FlipY":true,
+         "ZLiftDistanceCalculator":"var minLift = 4.5;\nvar value = 8.0;\nif ($CURSLICE > $NumFirstLayers) {\nvalue = minLift  +  0.0015*Math.pow($buildAreaMM,1);\n}\nvalue",
+         "ZLiftSpeedCalculator":"var value = 50.0;\nif ($CURSLICE > $NumFirstLayers) {\nvalue = 100.0 - 0.02 * Math.pow($buildAreaMM,1);\n}\nvalue",
+         "ProjectorGradientCalculator":null,
+         "ExposureTimeCalculator":"var value = $FirstLayerTime;\nif ($CURSLICE > $NumFirstLayers) {\n\tvalue = $LayerTime\n}\nvalue",
+         "SelectedInk":"Default",
+         "MinTestExposure":0,
+         "TestExposureStep":0,
+         "InkConfig":[  
+            {  
+               "PercentageOfPrintMaterialConsideredEmpty":10.0,
+               "Name":"Default",
+               "SliceHeight":0.1,
+               "LayerTime":26000,
+               "FirstLayerTime":140000,
+               "NumberofBottomLayers":4,
+               "ResinPriceL":65.0
+            }
+         ]
+      },
+      "MachineConfigurationName":"Photocentric Magna",
+      "SlicingProfileName":"Hard daylight red 0.1",
+      "AutoStart":true
+   },
+   "started":true,
+   "shutterOpen":false,
+   "displayDeviceID":":0.0",
+   "currentSlicePauseTime":0,
+   "status":"Ready",
+   "printInProgress":false,
+   "printPaused":false
+}
